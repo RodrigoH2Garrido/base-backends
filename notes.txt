@@ -1,0 +1,5 @@
+changes in package.json
+
+main -> servert.ts
+
+scrips -> nodemon ./src/server.ts
