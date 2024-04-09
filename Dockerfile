@@ -19,7 +19,6 @@ WORKDIR /app
 
 # Asignar permisos al usuario y grupo 'app' para la carpeta /app
 RUN chown -R $user:app /app
-RUN chmod -R 755 /app
 
 # Copiar la configuración de Nginx al contenedor
 COPY nginx.conf /etc/nginx/nginx.conf
