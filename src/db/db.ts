@@ -6,7 +6,8 @@ const dbConnection = new Sequelize({
     host: 'db',
     username: 'node',
     password: 'node',
-    database: 'base-node'
+    database: 'base-node',
+    timezone: 'UTC'
 })
 
 export default dbConnection
