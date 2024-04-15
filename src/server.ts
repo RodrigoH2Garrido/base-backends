@@ -1,4 +1,4 @@
-import express, {Express, Request, Response, Application} from 'express'
+import express, { Express, Request, Response, Application } from 'express'
 import dbConnection from './db/db'
 import router from './routes'
 
@@ -16,7 +16,6 @@ const init = async () => {
         })
 
         app.use(router)
-
 
         app.listen(port,()=>{
             console.log("SERVER RUNNING ON http:localhost:3002")
