@@ -1,23 +1,24 @@
 import { Sequelize, DataTypes } from "sequelize";
 import dbConnection from "../db/db";
+import { RolTable } from "../db/ColumnNames";
 
-const Roles = dbConnection.define("roles",{
-    id:{
+const Roles = dbConnection.define(RolTable.table_name,{
+    [RolTable.id]:{
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    name:{
+    [RolTable.name]:{
         type: DataTypes.STRING,
         allowNull:false
     },
-    createdAt: {
+    [RolTable.createdAt]:{
         type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: () => Date.now()
     },
-    updatedAt: {
+    [RolTable.updatedAt]:{
         type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: () => Date.now()
@@ -25,9 +26,9 @@ const Roles = dbConnection.define("roles",{
 })
 
 const roles = [
-    {name: 'Admin'},
-    {name: 'User'},
-    {name: 'Guest'}
+    {[RolTable.name]: 'Admin'},
+    {[RolTable.name]: 'User'},
+    {[RolTable.name]: 'Guest'}
 ]
 
 const  init = async () => {    

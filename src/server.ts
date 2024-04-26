@@ -1,10 +1,12 @@
-import express, { Express, Request, Response, Application } from 'express'
+import express, { Request, Response, Application } from 'express'
 import dbConnection from './db/db'
 import router from './routes'
 
 
 const app:Application = express()
 const port = 3000
+
+app.use(express.json())
 
 const init = async () => {
     try {

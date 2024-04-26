@@ -1,40 +1,40 @@
 import { DataTypes } from "sequelize";
 
 import dbConnection from "../db/db";
-
-const Users = dbConnection.define('users',{
-    id:{
+import { UserTable } from "../db/ColumnNames";
+const Users = dbConnection.define(UserTable.table_name,{
+    [UserTable.id]:{
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    name:{
+    [UserTable.name]:{
         type: DataTypes.STRING,
         allowNull: false,
     },
-    lastname:{
+    [UserTable.last_name]:{
         type: DataTypes.STRING,
         allowNull: false
     },
-    nickname:{
+    [UserTable.nickname]:{
         type: DataTypes.STRING,
         allowNull: true
     },
-    phone:{
+    [UserTable.phone]:{
         type: DataTypes.STRING,
         allowNull: true
     },
-    email:{
+    [UserTable.email]:{
         type: DataTypes.STRING,
         allowNull: false
     },
-    createdAt:{
+    [UserTable.createdAt]:{
         type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: () => Date.now()
     },
-    updatedAt: {
+    [UserTable.updatedAt]: {
         type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: () => Date.now()
