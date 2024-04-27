@@ -32,7 +32,7 @@ const roles = [
 ]
 
 const  init = async () => {    
-    await Roles.sync({force: true})
+    await Roles.sync({force: false})
     await Roles.bulkCreate(roles)
 }
 

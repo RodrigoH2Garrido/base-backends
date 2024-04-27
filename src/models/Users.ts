@@ -1,7 +1,9 @@
 import { DataTypes } from "sequelize";
 
 import dbConnection from "../db/db";
-import { UserTable } from "../db/ColumnNames";
+import { UserTable} from "../db/ColumnNames";
+import Groups from "../models/Groups";
+
 const Users = dbConnection.define(UserTable.table_name,{
     [UserTable.id]:{
         type: DataTypes.INTEGER,
@@ -40,6 +42,7 @@ const Users = dbConnection.define(UserTable.table_name,{
         defaultValue: () => Date.now()
     }
 })
+
 
 Users.sync({force: true})
 

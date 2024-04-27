@@ -17,3 +17,21 @@ export const RolTable = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 }
+
+export const GroupTable = {
+    table_name: 'groups',
+    id: 'id',
+    name: 'name',
+    topic: 'topic',
+    created_by: 'created_by',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+}
+
+export const UserGroupTable = {
+    table_name: 'user_group',
+    user_id: 'user_id',
+    group_id: 'group_id',
+    createdAt: 'createdAt',
+    updatedAt: 'uypdatedAt'
+}
