@@ -1,7 +1,7 @@
 import express, { Request, Response, Application } from 'express'
 import dbConnection from './db/db'
 import router from './routes'
-
+import syncAllModels from './db/ModelSync'
 
 const app:Application = express()
 const port = 3000
@@ -12,6 +12,8 @@ const init = async () => {
     try {
         await dbConnection.authenticate()
         console.log('Db connection success')
+        console.log('Syncing all models')
+        await syncAllModels()
         console.log('All models synced')
         app.get('/',(req: Request, res:Response) => {
             res.send("Welcome to Express with Typescript Server :D")

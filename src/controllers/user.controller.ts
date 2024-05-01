@@ -3,6 +3,7 @@ import Joi from "joi";
 import Users from "../models/Users";
 import { UserTable } from "../db/ColumnNames";
 import httpStatus from "http-status-codes";
+import { deleteUserToGroupAssignation } from "../services/user.group.assignation.service";
 
 export const getUsers = async (request: Request, response: Response) => {
     const users = await Users.findAll()
@@ -32,7 +33,7 @@ export const createUser = async (request: Request, response: Response) => {
 
     try {
 
-        const createdUser = await (await Users.create(body)).toJSON()
+        const createdUser = (await Users.create(body)).toJSON() // no se si esto funciona
         console.log('CREATED USER: ',createdUser)
         return response.status(httpStatus.CREATED).json({
             message: 'Creating User',
@@ -127,5 +128,36 @@ export const getUserById = async(request:Request, response:Response) => {
             message: 'Something went wrong when getting user by id'
         })
     }
+}
 
+export const deleteUserById = async(request:Request, response:Response) => {
+    const userId = Number(request.params.userId)
+    try {
+        const user = await Users.findOne({
+            where:{
+                [UserTable.id]: userId
+            }
+        })
+
+        if(!user){
+            return response.status(httpStatus.NOT_FOUND).json({
+                message: `User ${userId} not found`
+            })
+        }
+
+        const deletedUser = await user.destroy()
+        console.log('DELETED USER: ', deletedUser)
+        const deletedAssignation = await deleteUserToGroupAssignation(userId)
+        console.log(`Deleted Assignation: ${deletedAssignation}`)
+        return response.status(httpStatus.OK).json({
+            message:`User ${userId} deleted`,
+            user: user,
+            deletedUser: deletedUser
+        })
+    } catch (error) {
+        return response.status(httpStatus.BAD_REQUEST).json({
+            message: 'Something went wrong when deleting a user',
+            error: error
+        })
+    }
 }

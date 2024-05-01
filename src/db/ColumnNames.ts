@@ -33,5 +33,5 @@ export const UserGroupTable = {
     user_id: 'user_id',
     group_id: 'group_id',
     createdAt: 'createdAt',
-    updatedAt: 'uypdatedAt'
+    updatedAt: 'updatedAt'
 }

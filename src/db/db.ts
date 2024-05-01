@@ -1,6 +1,4 @@
 import { Sequelize } from 'sequelize'
-
-
 const dbConnection = new Sequelize({
     dialect: 'postgres',
     host: 'db',

@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes } from "sequelize";
+import { DataTypes } from "sequelize";
 import dbConnection from "../db/db";
 import { RolTable } from "../db/ColumnNames";
 
@@ -25,17 +25,6 @@ const Roles = dbConnection.define(RolTable.table_name,{
     }
 })
 
-const roles = [
-    {[RolTable.name]: 'Admin'},
-    {[RolTable.name]: 'User'},
-    {[RolTable.name]: 'Guest'}
-]
 
-const  init = async () => {    
-    await Roles.sync({force: false})
-    await Roles.bulkCreate(roles)
-}
-
-init()
 
 export default Roles

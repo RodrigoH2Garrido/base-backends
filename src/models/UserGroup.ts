@@ -25,11 +25,7 @@ const UserGroup = dbConnection.define(UserGroupTable.table_name,{
     }
 })
 
-Groups.belongsToMany(Users,{ through: UserGroupTable.table_name })
-Users.belongsToMany(Groups,{ through: UserGroupTable.table_name })
-
-
-UserGroup.sync({force: true})
-
+Groups.belongsToMany(Users,{ through: UserGroupTable.table_name, foreignKey: UserGroupTable.group_id })
+Users.belongsToMany(Groups,{ through: UserGroupTable.table_name, foreignKey: UserGroupTable.user_id })
 
 export default UserGroup

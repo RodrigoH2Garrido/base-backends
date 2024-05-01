@@ -2,7 +2,6 @@ import { DataTypes } from "sequelize";
 
 import dbConnection from "../db/db";
 import { UserTable} from "../db/ColumnNames";
-import Groups from "../models/Groups";
 
 const Users = dbConnection.define(UserTable.table_name,{
     [UserTable.id]:{
@@ -42,8 +41,5 @@ const Users = dbConnection.define(UserTable.table_name,{
         defaultValue: () => Date.now()
     }
 })
-
-
-Users.sync({force: true})
 
 export default Users
