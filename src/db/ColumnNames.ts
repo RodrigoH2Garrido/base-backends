@@ -32,6 +32,25 @@ export const UserGroupTable = {
     table_name: 'user_group',
     user_id: 'user_id',
     group_id: 'group_id',
+    role_id: 'role_id',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+}
+
+export const InvitationStatusesTable = {
+    table_name: 'invitation_status',
+    id: 'id',
+    name: 'name',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+}
+
+export const GroupInvitationTable = {
+    table_name: 'group_invitations',
+    from_user: 'from_user',
+    to_user: 'to_user',
+    group_id: 'group_id',
+    status_id: 'status_id',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 }

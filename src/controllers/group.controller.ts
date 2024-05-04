@@ -32,7 +32,8 @@ export const createGroup = async (request: Request, response: Response) => {
         const createdGroup = (await Groups.create(body)).toJSON()
         console.log('CREATED GROUP')
         console.log(createdGroup)
-        await assignUserToGroup(Number(body.created_by),createdGroup[GroupTable.id])
+        await assignUserToGroup(Number(body.created_by),createdGroup[GroupTable.id],1)
+        /* when creating a group de user creating the group is the admin */
         return response.status(httpStatus.CREATED).json({
             message: 'CREATING GROUP',
             group: createdGroup[GroupTable.id]

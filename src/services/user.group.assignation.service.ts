@@ -2,11 +2,12 @@ import UserGroup from "../models/UserGroup"
 import { GroupTable, UserGroupTable } from "../db/ColumnNames"
 import httpStatus from "http-status-codes"
 
-export const assignUserToGroup = async (userId:Number, groupId:Number) => {
+export const assignUserToGroup = async (userId:Number, groupId:Number, roleId:Number) => {
     try {
         const assignation =  await UserGroup.create({
             [UserGroupTable.user_id]: userId,
-            [UserGroupTable.group_id]: groupId
+            [UserGroupTable.group_id]: groupId,
+            [UserGroupTable.role_id]: roleId
         })
         return true
     } catch (error) {

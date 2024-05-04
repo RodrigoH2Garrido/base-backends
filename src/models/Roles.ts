@@ -1,6 +1,8 @@
 import { DataTypes } from "sequelize";
 import dbConnection from "../db/db";
 import { RolTable } from "../db/ColumnNames";
+import UserGroup from "./UserGroup";
+
 
 const Roles = dbConnection.define(RolTable.table_name,{
     [RolTable.id]:{
@@ -25,6 +27,6 @@ const Roles = dbConnection.define(RolTable.table_name,{
     }
 })
 
-
-
+/* Roles.hasMany(UserGroup)
+ */
 export default Roles
