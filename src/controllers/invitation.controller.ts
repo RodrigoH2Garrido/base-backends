@@ -1,0 +1,109 @@
+import { Request, Response } from "express"
+import GroupInvitations from "../models/GroupInvitations"
+import httpStatus from 'http-status-codes'
+import { GroupInvitationTable, InvitationStatusesTable, UserTable } from "../db/ColumnNames"
+import Joi from "joi"
+import Users from "../models/Users"
+
+export const sendGroupInvitation = async (request: Request, response: Response) => {
+    const userId = Number(request.params.userId)
+
+    const user = await Users.findOne({
+        where:{
+            [UserTable.id]: userId
+        }
+    })
+
+    if(!user){
+        return response.status(httpStatus.NOT_FOUND).json({
+            message:`user ${userId} not found`
+        })
+    }
+
+    const body = request.body
+    console.log('body: ', body)
+    const schema = Joi.object({
+        [GroupInvitationTable.from_user]: Joi.number().required(),
+        // [GroupInvitationTable.to_user]: Joi.number().required(),
+        [GroupInvitationTable.group_id]: Joi.number().required(),
+        [GroupInvitationTable.status_id]: Joi.number().required(),
+    })
+
+    try {
+        const validation = await schema.validateAsync(body)
+        console.log('VALIDATION: ', validation)
+    } catch (error) {
+        return response.status(httpStatus.PRECONDITION_FAILED).json({
+            error: error
+        })
+    }
+
+    const data = {
+        ...body,
+        [GroupInvitationTable.to_user]: userId
+    }
+    console.log('Data: ', data)
+
+    try {
+        /* const prevInvitation = await GroupInvitations.findOne(data)
+        console.log(prevInvitation)
+        if(prevInvitation){
+            return response.status(httpStatus.CONFLICT).json({
+                message: `Invitation already sent to user ${userId}`,
+                repeatedInvitation: prevInvitation
+            })
+        } */
+        const invitation = await GroupInvitations.create(data)
+        console.log('INVITATION: ', invitation)
+        return response.status(httpStatus.OK).json({
+            message: 'Invitation Created',
+            invitation: invitation
+        })
+    } catch (error) {
+        return response.status(httpStatus.BAD_REQUEST).json({
+            message: 'Something went wrong went creating an invitation',
+            error: error
+        })
+    }
+
+}
+
+
+export const getAllGroupInvitations = async(request: Request, response: Response) => {
+    try {
+        const invitations = await GroupInvitations.findAll()
+        return response.status(httpStatus.OK).json({
+            message: 'Obtaining All invitations',
+            invitations: invitations
+        })
+    } catch (error) {
+        return response.status(httpStatus.BAD_REQUEST).json({
+            message: 'Something went wrong when getting invitations',
+            error: error
+        })
+    }
+}
+
+export const getInvitationsByGroupId = async(request: Request, response:Response) => {
+    const groupId = request.params.groupId
+    try {
+        console.log(`GROUPID: ${groupId}`)
+        const invitations = await GroupInvitations.findAll({
+            where:{
+                [GroupInvitationTable.group_id]: groupId 
+            }
+        })
+        return response.status(httpStatus.OK).json({
+            message: `Getting all invitations to group ${groupId}`,
+            invitations: invitations
+        })
+    } catch (error) {
+        return response.status(httpStatus.BAD_REQUEST).json({
+            message: 'Something went wrong when getting invitations by groupId',
+            error: error
+        })
+    }
+}
+export const resolveGroupInvitation = async(request: Request, response: Response) => {
+   
+}

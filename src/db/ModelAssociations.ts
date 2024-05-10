@@ -21,6 +21,7 @@ const createModelAssociations = async () => {
     Users.hasMany(GroupInvitations,{ foreignKey: GroupInvitationTable.from_user })
     Users.hasMany(GroupInvitations,{ foreignKey: GroupInvitationTable.to_user })
     Groups.hasMany(GroupInvitations, { foreignKey: GroupInvitationTable.group_id })
+
     /* UserGroup.hasOne(Roles, {    
         foreignKey: UserGroupTable.role_id,
     }) */

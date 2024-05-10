@@ -47,6 +47,7 @@ export const InvitationStatusesTable = {
 
 export const GroupInvitationTable = {
     table_name: 'group_invitations',
+    id: 'id',
     from_user: 'from_user',
     to_user: 'to_user',
     group_id: 'group_id',

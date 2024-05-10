@@ -4,6 +4,12 @@ import dbConnection from "../db/db";
 import { GroupInvitationTable } from "../db/ColumnNames";
 
 const GroupInvitations = dbConnection.define(GroupInvitationTable.table_name,{
+    [GroupInvitationTable.id]: {
+        type: DataTypes.INTEGER,
+        allowNull:false,
+        primaryKey: true,
+        autoIncrement: true
+    },
     [GroupInvitationTable.from_user]: {
         type: DataTypes.INTEGER,
         allowNull: false,
