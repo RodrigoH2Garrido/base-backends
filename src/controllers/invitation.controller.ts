@@ -45,16 +45,21 @@ export const sendGroupInvitation = async (request: Request, response: Response) 
     console.log('Data: ', data)
 
     try {
-        /* const prevInvitation = await GroupInvitations.findOne(data)
+        const prevInvitation = await GroupInvitations.findOne({
+            where:{
+                [GroupInvitationTable.from_user]: body.from_user,
+                [GroupInvitationTable.to_user]: userId,
+                [GroupInvitationTable.group_id]: body.group_id
+            }
+        })
         console.log(prevInvitation)
         if(prevInvitation){
             return response.status(httpStatus.CONFLICT).json({
                 message: `Invitation already sent to user ${userId}`,
                 repeatedInvitation: prevInvitation
             })
-        } */
+        }
         const invitation = await GroupInvitations.create(data)
-        console.log('INVITATION: ', invitation)
         return response.status(httpStatus.OK).json({
             message: 'Invitation Created',
             invitation: invitation
