@@ -18,6 +18,8 @@ const createModelAssociations = async () => {
     Groups.belongsToMany(Users,{ through: UserGroupTable.table_name, foreignKey:UserGroupTable.group_id})
     Users.belongsToMany(Groups,{ through: UserGroupTable.table_name, foreignKey: UserGroupTable.user_id })
     InvitationStatuses.hasMany(GroupInvitations,{ foreignKey: GroupInvitationTable.status_id })
+    GroupInvitations.belongsTo(InvitationStatuses, { foreignKey: GroupInvitationTable.status_id });
+
     Users.hasMany(GroupInvitations,{ foreignKey: GroupInvitationTable.from_user })
     Users.hasMany(GroupInvitations,{ foreignKey: GroupInvitationTable.to_user })
     Groups.hasMany(GroupInvitations, { foreignKey: GroupInvitationTable.group_id })

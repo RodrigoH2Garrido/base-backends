@@ -4,6 +4,7 @@ import httpStatus from 'http-status-codes'
 import { GroupInvitationTable, InvitationStatusesTable, UserTable } from "../db/ColumnNames"
 import Joi from "joi"
 import Users from "../models/Users"
+import InvitationStatuses from "../models/InvitationStatuses"
 
 export const sendGroupInvitation = async (request: Request, response: Response) => {
     const userId = Number(request.params.userId)
@@ -49,7 +50,8 @@ export const sendGroupInvitation = async (request: Request, response: Response) 
             where:{
                 [GroupInvitationTable.from_user]: body.from_user,
                 [GroupInvitationTable.to_user]: userId,
-                [GroupInvitationTable.group_id]: body.group_id
+                [GroupInvitationTable.group_id]: body.group_id,
+                [GroupInvitationTable.status_id]: 1
             }
         })
         console.log(prevInvitation)
@@ -76,12 +78,15 @@ export const sendGroupInvitation = async (request: Request, response: Response) 
 
 export const getAllGroupInvitations = async(request: Request, response: Response) => {
     try {
-        const invitations = await GroupInvitations.findAll()
+        const invitations = await GroupInvitations.findAll({
+            include: [InvitationStatuses]
+        })
         return response.status(httpStatus.OK).json({
             message: 'Obtaining All invitations',
             invitations: invitations
         })
     } catch (error) {
+        console.log(error)
         return response.status(httpStatus.BAD_REQUEST).json({
             message: 'Something went wrong when getting invitations',
             error: error
@@ -109,6 +114,39 @@ export const getInvitationsByGroupId = async(request: Request, response:Response
         })
     }
 }
-export const resolveGroupInvitation = async(request: Request, response: Response) => {
-   
+export const updateGroupInvitation = async(request: Request, response: Response) => {
+    const groupInvitationId = Number(request.params.groupInvitationId)
+    const statusId = Number(request.params.statusId)
+
+    try {
+        const invitation = await GroupInvitations.findOne({
+            where:{
+                [GroupInvitationTable.id]: groupInvitationId
+            }
+        })
+
+        if(!invitation){
+            return response.status(httpStatus.NOT_FOUND).json({
+                message: `Invitation ${groupInvitationId} doesn't exist`
+            })
+        }
+
+        const updatedInvitation = await invitation.update({
+            [GroupInvitationTable.status_id]: statusId
+        },{
+            where:{
+                [GroupInvitationTable.id]: groupInvitationId
+            }
+        })
+        return response.status(httpStatus.OK).json({
+            message: `Invitation ${groupInvitationId} updated`,
+            update: updatedInvitation
+        })
+
+    } catch (error) {
+        return response.status(httpStatus.BAD_REQUEST).json({
+            message: `Something went wrong when updating groupInvitation ${groupInvitationId}`,
+            error: error
+        })
+    }
 }
