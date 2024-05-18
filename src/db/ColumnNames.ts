@@ -6,6 +6,7 @@ export const UserTable = {
     nickname: 'nickname',
     phone: 'phone',
     email: 'email',
+    password: 'password',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 }
@@ -54,4 +55,36 @@ export const GroupInvitationTable = {
     status_id: 'status_id',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
+}
+
+
+export const TaskTable = {
+    table_name: 'tasks',
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    quantity: 'quantity',
+    status_id: 'status_id',
+    group_id: 'group_id',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+}
+
+export const TaskStatusesTable = {
+    table_name: 'task_statuses',
+    id: 'id',
+    name: 'name',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+    
+}
+
+// de aca en adelante falta crear modelos
+export const TaskUserTable = {
+    table_name:"task_user",
+    id: 'id',
+    user_id:'user_id',
+    task_id: 'task_id',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt  '
 }

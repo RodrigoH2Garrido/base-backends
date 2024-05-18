@@ -30,6 +30,10 @@ const Users = dbConnection.define(UserTable.table_name,{
         type: DataTypes.STRING,
         allowNull: false
     },
+    [UserTable.password]:{
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     [UserTable.createdAt]:{
         type: DataTypes.BIGINT,
         allowNull: false,

@@ -13,10 +13,10 @@ const init = async () => {
     try {
         await dbConnection.authenticate()
         console.log('Db connection success')
-        console.log('\n Syncing all models \n')
+        console.log('\n Syncing all models \n\n')
         await syncAllModels()
         console.log('\n All models synced \n')
-        console.log('\n generating all model associations \n')
+        console.log('\n generating all model associations \n\n\n')
         await createModelAssociations()
         console.log('\n all model associations created \n')
 

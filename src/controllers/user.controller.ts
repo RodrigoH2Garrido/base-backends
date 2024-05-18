@@ -4,6 +4,7 @@ import Users from "../models/Users";
 import { UserTable } from "../db/ColumnNames";
 import httpStatus from "http-status-codes";
 import { deleteUserToGroupAssignation } from "../services/user.group.assignation.service";
+import bcrypt from 'bcrypt'
 
 export const getUsers = async (request: Request, response: Response) => {
     const users = await Users.findAll()
@@ -19,7 +20,8 @@ export const createUser = async (request: Request, response: Response) => {
         [UserTable.last_name]: Joi.string().required(),
         [UserTable.nickname]: Joi.string(),
         [UserTable.phone]: Joi.string(),
-        [UserTable.email]: Joi.string().required()
+        [UserTable.email]: Joi.string().required(),
+        [UserTable.password]: Joi.string().required()
     })
     const body = request.body
     try {
@@ -32,8 +34,10 @@ export const createUser = async (request: Request, response: Response) => {
     }
 
     try {
-
-        const createdUser = (await Users.create(body)).toJSON() // no se si esto funciona
+        const saltRounds = 10
+        const hashedPwd = await bcrypt.hash(body.password,saltRounds)
+        const data = {...body, [UserTable.password]: hashedPwd}
+        const createdUser = (await Users.create(data)).toJSON() // no se si esto funciona
         console.log('CREATED USER: ',createdUser)
         return response.status(httpStatus.CREATED).json({
             message: 'Creating User',
@@ -157,6 +161,35 @@ export const deleteUserById = async(request:Request, response:Response) => {
     } catch (error) {
         return response.status(httpStatus.BAD_REQUEST).json({
             message: 'Something went wrong when deleting a user',
+            error: error
+        })
+    }
+}
+
+export const validateUserPwd = async (request: Request, response: Response) => {
+    const userId = Number(request.params.userId)
+    const userPwd = request.params.userPwd
+    try {
+        const user = await Users.findOne({
+            where:{
+                [UserTable.id]: userId
+            }
+        })
+        if(!user){
+            return response.status(httpStatus.NOT_FOUND).json({
+                message: `User ${userId} doesn't exist`,
+            })
+        }
+        const userFound = user.toJSON()
+        const validation = await bcrypt.compare(userPwd,userFound[UserTable.password])
+        return response.status(httpStatus.OK).json({
+            user: userFound,
+            validation: validation
+        })
+    } catch (error) {
+        console.log(error)
+        return response.status(httpStatus.BAD_REQUEST).json({
+            message: 'Something went wrong when validating pwd',
             error: error
         })
     }
