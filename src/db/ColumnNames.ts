@@ -85,6 +85,7 @@ export const TaskUserTable = {
     id: 'id',
     user_id:'user_id',
     task_id: 'task_id',
+    status_id: 'status_id',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt  '
+    updatedAt: 'updatedAt'
 }

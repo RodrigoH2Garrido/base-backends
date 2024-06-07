@@ -17,6 +17,10 @@ const TaskUser = dbConnection.define(TaskUserTable.table_name,{
         type: DataTypes.INTEGER,
         allowNull: false
     },
+    [TaskUserTable.status_id]: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     [TaskUserTable.createdAt]: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -24,7 +28,7 @@ const TaskUser = dbConnection.define(TaskUserTable.table_name,{
     },
     [TaskUserTable.updatedAt]: {
         type: DataTypes.BIGINT,
-        allowNull: false,
+        allowNull:false,
         defaultValue: () => Date.now()
     }
 })

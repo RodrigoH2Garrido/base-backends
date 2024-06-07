@@ -10,8 +10,9 @@ import Tasks from "../models/Tasks"
 import TaskUser from "../models/TaskUser"
 
 
-import { GroupInvitationTable, GroupTable, TaskTable, UserGroupTable } from "./ColumnNames"
+import { GroupInvitationTable, GroupTable, TaskStatusesTable, TaskTable, TaskUserTable, UserGroupTable } from "./ColumnNames"
 import dbConnection from "./db"
+import TaskStatuses from "../models/TaskStatuses"
 
 const createModelAssociations = async () => {
     Roles.hasMany(UserGroup, {
@@ -23,6 +24,7 @@ const createModelAssociations = async () => {
     });
     Groups.belongsToMany(Users, { through: UserGroupTable.table_name, foreignKey: UserGroupTable.group_id })
     Users.belongsToMany(Groups, { through: UserGroupTable.table_name, foreignKey: UserGroupTable.user_id })
+    
     InvitationStatuses.hasMany(GroupInvitations, { foreignKey: GroupInvitationTable.status_id })
     GroupInvitations.belongsTo(InvitationStatuses, { foreignKey: GroupInvitationTable.status_id });
 
@@ -31,6 +33,12 @@ const createModelAssociations = async () => {
     Groups.hasMany(GroupInvitations, { foreignKey: GroupInvitationTable.group_id })
 
     Groups.hasMany(Tasks, { foreignKey: TaskTable.group_id })
+
+    Users.belongsToMany(Tasks, { through: TaskUserTable.table_name, foreignKey: TaskUserTable.user_id })
+    Tasks.belongsToMany(Users, { through: TaskUserTable.table_name, foreignKey: TaskUserTable.task_id })
+    TaskUser.belongsTo(TaskStatuses, { foreignKey: TaskUserTable.status_id})
+    TaskStatuses.hasMany(TaskUser, { foreignKey: TaskUserTable.status_id })
+
 
     /* UserGroup.hasOne(Roles, {    
         foreignKey: UserGroupTable.role_id,
