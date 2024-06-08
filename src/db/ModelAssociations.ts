@@ -36,9 +36,9 @@ const createModelAssociations = async () => {
 
     Users.belongsToMany(Tasks, { through: TaskUserTable.table_name, foreignKey: TaskUserTable.user_id })
     Tasks.belongsToMany(Users, { through: TaskUserTable.table_name, foreignKey: TaskUserTable.task_id })
-    TaskUser.belongsTo(TaskStatuses, { foreignKey: TaskUserTable.status_id})
-    TaskStatuses.hasMany(TaskUser, { foreignKey: TaskUserTable.status_id })
+    
 
+    TaskStatuses.hasMany(Tasks, {foreignKey: TaskTable.status_id})
 
     /* UserGroup.hasOne(Roles, {    
         foreignKey: UserGroupTable.role_id,

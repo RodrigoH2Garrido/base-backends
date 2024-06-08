@@ -79,13 +79,11 @@ export const TaskStatusesTable = {
     
 }
 
-// de aca en adelante falta crear modelos
 export const TaskUserTable = {
     table_name:"task_user",
     id: 'id',
     user_id:'user_id',
     task_id: 'task_id',
-    status_id: 'status_id',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 }
