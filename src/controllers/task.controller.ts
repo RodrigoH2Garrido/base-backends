@@ -4,6 +4,7 @@ import httpStatus from "http-status-codes"
 import Tasks from "../models/Tasks"
 import TaskUser from "../models/TaskUser"
 import { TaskTable, TaskUserTable } from "../db/ColumnNames"
+import { where } from "sequelize"
 
 export const getAllTasks = async (request: Request, response: Response) => {
     try {
@@ -30,10 +31,8 @@ export const createTask = async (request: Request, response: Response) => {
     })
 
     const body = request.body
-    console.log('BBODY: ',body)
     try {
         const validation = await schema.validateAsync(body)
-        console.log('VALIDATION: ',validation)
     } catch (error) {
         return response.status(httpStatus.PRECONDITION_FAILED).json({
             error: error
@@ -107,9 +106,16 @@ export const deleteTaskById = async (request: Request, response: Response) => {
                 [TaskTable.id]: taskId
             }
         })
+
+        const deletedAssignations = await TaskUser.destroy({
+            where:{
+                [TaskUserTable.task_id]: taskId
+            }
+        })
         return response.status(httpStatus.OK).json({
             message: 'Task deleted',
-            task: deletedTask
+            task: deletedTask,
+            assignations: deletedAssignations
         })
     } catch (error) {
         return response.status(httpStatus.BAD_REQUEST).json({
@@ -117,3 +123,49 @@ export const deleteTaskById = async (request: Request, response: Response) => {
         })
     }
 }
+
+export const updateTaskStatusById = async (request: Request, response: Response) =>{
+    const taskId = request.params.taskId
+    const statusId = request.params.statusId
+
+    try {
+        const task = await Tasks.findOne({
+            where:{
+                [TaskTable.id]: taskId
+            }
+        })
+        if(!task){
+            return response.status(httpStatus.NOT_FOUND).json({
+                message: `Task: ${taskId} Not Found`
+            })
+        }
+
+        // const updatedTask = await Tasks.update(
+        //     { [TaskTable.status_id]: statusId },
+        //     {
+        //         where:{
+        //             [TaskTable.id]: taskId
+        //         }
+        //     }
+        // )
+
+        const updatedTask = task.update(
+            {
+                [TaskTable.status_id]: statusId
+            },
+            {
+                where:{
+                    [TaskTable.id]: taskId
+                }
+            }
+        )
+        return response.status(httpStatus.OK).json({
+            message: `Task: ${taskId} status updated to status: ${statusId}`,
+            task: updatedTask
+        })
+    } catch (error) {
+        return response.status(httpStatus.BAD_REQUEST).json({
+            message: `Something whent wrong when updating task ${taskId}`
+        })
+    }
+} 

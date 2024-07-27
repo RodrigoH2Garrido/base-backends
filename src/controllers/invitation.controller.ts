@@ -149,4 +149,5 @@ export const updateGroupInvitation = async(request: Request, response: Response)
             error: error
         })
     }
+    
 }
