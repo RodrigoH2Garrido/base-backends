@@ -9,8 +9,8 @@ services:
         user: rodrigo
         uid: 1000
     ports:
-      - 3004:5173 #front
-      - 3005:8000 #back
+      - 3005:8000
+      - 3004:5173 
     volumes:
       - ./:/var/www/html
     networks:

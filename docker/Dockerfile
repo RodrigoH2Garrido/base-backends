@@ -19,6 +19,7 @@ RUN apt-get install -y \
     libicu-dev \
     sudo
 
+
 RUN pecl install redis
 
 
@@ -28,11 +29,18 @@ RUN docker-php-ext-configure intl \
     && docker-php-ext-install sockets \
     && docker-php-ext-install opcache \
     && docker-php-ext-enable redis \
-    && docker-php-ext-install bcmath
+    && docker-php-ext-install bcmath \ 
+    # && docker-php-ext-install pgsql \
+    # && docker-php-ext-enable pgsql \
+    # && docker-php-ext-install php-pdo-pgsql \
+    # && docker-php-ext-enable php-pdo-pgsql
+    && docker-php-ext-install pdo_pgsql \
+    && docker-php-ext-enable pdo_pgsql \
+    && docker-php-ext-install pgsql \
+    && docker-php-ext-enable pgsql
     # docker-php-ext-install pdo_pgsql \
     # && docker-php-ext-enable pdo_pgsql \
     # && docker-php-ext-install pgsql \
-    # && docker-php-ext-enable pgsql \
 
     # 2. apache configs + document root
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public

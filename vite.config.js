@@ -7,8 +7,10 @@ export default defineConfig({
         host: "0.0.0.0",
         hmr: {
             host: "host.docker.internal",
-            clientPort: 10121,
+            clientPort: 3004,
         },
+        logLevel: 'debug', // Habilitar más detalles de logs
+
     },
     plugins: [
         laravel({
