@@ -1,47 +1,40 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <v-responsive>
+    <v-app class="d-flex flex-column">
+      <v-app-bar title="My app" style="">
+        <template v-slot:default>
+           <v-list class="d-flex justify-start" style="width: 70% ;">
+              <v-list-item
+                v-for="(page,index) in pages"
+                :key="index"
+              >
+                <RouterLink
+                  :to="page.path"
+                >
+                  {{ page.name }}
+                </RouterLink>
+              </v-list-item>
+            </v-list>
+        </template>
+      </v-app-bar>
+      <v-main style="border: 1px solid red;">
+        <RouterView />
+        <v-slot></v-slot>
+      </v-main>
+    </v-app>
+  </v-responsive>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script setup>
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+const pages = [
+  {
+    path: '/',
+    name: 'Welcome'
+  },
+  {
+    path: '/about',
+    name: 'About'
   }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+]
+</script>

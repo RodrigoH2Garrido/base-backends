@@ -10,3 +10,6 @@ docker exec -it base-node-vue-standalone bash -c "
 
 docker exec -it base-node-vue-standalone bash -c "npm install"
 docker exec -it base-node-vue-standalone bash -c "chown -R is:app /app"
+docker exec -it base-node-vue-standalone bash -c "npm install vue-router@4"
+docker exec -it base-node-vue-standalone bash -c "npm install vuetify vite-plugin-vuetify"
+docker exec -it base-node-vue-standalone bash -c "npm install @mdi/font"
