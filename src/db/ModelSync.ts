@@ -10,6 +10,7 @@ import TaskUser from "../models/TaskUser"
 import { InvitationStatusesTable, RolTable, TaskStatusesTable } from "./ColumnNames"
 import dbConnection from "./db"
 import TaskStatuses from "../models/TaskStatuses"
+import Sessions from "../models/Sessions"
 
 const syncAllModels = async () => {
     // Sincroniza los modelos sin forzar la creación de tablas
@@ -53,6 +54,7 @@ const syncAllModels = async () => {
 
     await TaskUser.sync({force: false})
 
+    await Sessions.sync({force: false})
     /* await dbConnection.sync({force:false})
     await Roles.bulkCreate(roles); */
 };

@@ -10,9 +10,10 @@ import Tasks from "../models/Tasks"
 import TaskUser from "../models/TaskUser"
 
 
-import { GroupInvitationTable, GroupTable, TaskStatusesTable, TaskTable, TaskUserTable, UserGroupTable } from "./ColumnNames"
+import { GroupInvitationTable, GroupTable, SessionsTable, TaskStatusesTable, TaskTable, TaskUserTable, UserGroupTable } from "./ColumnNames"
 import dbConnection from "./db"
 import TaskStatuses from "../models/TaskStatuses"
+import Sessions from "../models/Sessions"
 
 const createModelAssociations = async () => {
     Roles.hasMany(UserGroup, {
@@ -37,15 +38,15 @@ const createModelAssociations = async () => {
     Users.belongsToMany(Tasks, { through: TaskUserTable.table_name, foreignKey: TaskUserTable.user_id })
     Tasks.belongsToMany(Users, { through: TaskUserTable.table_name, foreignKey: TaskUserTable.task_id })
     
-
     TaskStatuses.hasMany(Tasks, {foreignKey: TaskTable.status_id})
+
+    Users.hasMany(Sessions, { foreignKey: SessionsTable.user_id })
+    Sessions.belongsTo(Users, { foreignKey: SessionsTable.user_id })
 
     /* UserGroup.hasOne(Roles, {    
         foreignKey: UserGroupTable.role_id,
     }) */
-
     await dbConnection.sync({ alter: true })
-
 }
 
 export default createModelAssociations

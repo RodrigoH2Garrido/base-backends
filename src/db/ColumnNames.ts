@@ -87,3 +87,13 @@ export const TaskUserTable = {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
 }
+
+export const SessionsTable = {
+    table_name: "sessions",
+    user_id: 'user_id',
+    token: 'token',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    expiresAt: 'expiresAt',
+    device_info: 'device_info'
+}
