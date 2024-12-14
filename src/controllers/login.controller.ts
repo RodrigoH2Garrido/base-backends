@@ -2,7 +2,7 @@ import { Response, Request } from "express"
 import Joi from "joi"
 import Sessions from "../models/Sessions"
 import Users from "../models/Users"
-import { updateSessionByUserId } from "../services/session.service"
+import { updateSessionByUserId, generateToken, validateToken } from "../services/session.service"
 import { SessionsTable, UserTable } from "../db/ColumnNames"
 import httpStatus from "http-status-codes"
 import bcrypt from 'bcrypt'
@@ -13,7 +13,8 @@ dotenv.config()
 export const login = async (request: Request , response: Response) => {
     const schema = Joi.object({
         [UserTable.email]: Joi.string().required(),
-        [UserTable.password]: Joi.string().required()
+        [UserTable.password]: Joi.string().required(),
+        [SessionsTable.token]: Joi.string()
     })
     const body = request.body
     try {
@@ -24,6 +25,14 @@ export const login = async (request: Request , response: Response) => {
             error: error
         })
     }
+
+    if(body.token){
+        const val = validateToken(body.token)
+        return response.status(200).json({
+            validation: val
+        })
+    }
+
     const userEmail = body[UserTable.email]
     const userPwd = body[UserTable.password]
     try {
@@ -44,18 +53,18 @@ export const login = async (request: Request , response: Response) => {
                 message: 'Incorrect email or password'
             })
         }
-        
-        const secretKey = process.env.TOKEN_SECRET_KEY
-        if (!secretKey) {
-            return response.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-                message: 'Internal Server Error: JWT secret key not defined in environment variables'
+        const payload = {
+            [UserTable.email]: userEmail,
+            [UserTable.password]: userPwd
+        }
+        const token = generateToken(payload)
+        console.log('TOKEN')
+        console.log(token)
+        if(!token){
+            return response.status(500).json({
+                message: 'ERROR WHEN GENERATING TOKEN'
             })
         }
-        const options = {
-            expiresIn: '1h'
-        }
-        const token = jwt.sign(body, secretKey, options)
-
         const srvRes = await updateSessionByUserId(userFound[UserTable.id],token)
 
         return response.status(httpStatus.OK).json({

@@ -1,7 +1,20 @@
 
 import Sessions from "../models/Sessions"
 import { SessionsTable } from "../db/ColumnNames"
+import { request } from "http"
+import jwt from 'jsonwebtoken'
 
+
+export const generateToken = (payload: Object) => {
+    const options = {
+        expiresIn: '1h'
+    }
+    const secretKey = process.env.TOKEN_SECRET_KEY
+    if (!secretKey) {
+        return null
+    }
+    return jwt.sign(payload, secretKey, options)
+}
 
 export const updateSessionByUserId = async (userId: Number, token: String) => {
     try {
@@ -41,4 +54,24 @@ export const updateSessionByUserId = async (userId: Number, token: String) => {
         return null
     }
     return false
+}
+
+
+export const validateToken = (token: string) => {
+    try {
+        const secretKey = process.env.TOKEN_SECRET_KEY;
+        if (!secretKey) {
+            return false;
+        }
+        const decoded = jwt.verify(token, secretKey); // Sin callback
+        console.log('El token es válido:', decoded);
+        return true;
+    } catch (error) {
+        if ((error as any).name === 'TokenExpiredError') {
+            console.log('El token ha expirado.');
+        } else {
+            console.log('El token no es válido.');
+        }
+        return false;
+    }
 }
