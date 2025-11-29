@@ -1,17 +1,17 @@
-FROM golang:1.22
+FROM golang:1.25
 
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
+RUN mkdir -p /tmp
+
 # Instalamos Air (hot reload)
 RUN go install github.com/air-verse/air@latest
 
-# Copiamos los archivos de dependencias primero (mejor cache)
-COPY go.mod go.sum ./
-RUN go mod download
 
-# Copiamos el resto del proyecto
 COPY . .
+RUN if [ -f go.mod ]; then go mod download; fi
+
 
 # Exponemos el puerto donde corre Gin
 EXPOSE 8080

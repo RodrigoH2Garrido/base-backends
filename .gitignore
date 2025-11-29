@@ -1,0 +1,56 @@
+# === Go ===
+# Archivos de compilación
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Binarios creados por go build
+/bin
+/tmp
+*.out
+
+# Módulos cache
+vendor/
+go.sum # opcional si quieres reproducibilidad exacta
+
+# Archivos de pruebas
+*.test
+
+# === Air ===
+# Air genera una carpeta temporal donde compila el binario
+tmp/
+.air/
+
+# Archivo de log temporal
+air.log
+
+# === Docker ===
+# Archivos ignorados por montajes
+*.pid
+
+# === Linux ===
+# Archivos temporales del sistema
+*.swp
+*.swo
+*~
+
+# === IDE / Editores ===
+# VSCode
+.vscode/
+.history/
+
+# Goland / IntelliJ
+.idea/
+
+# === Logs ===
+*.log
+
+# === Node (por si usas algún script) ===
+node_modules/
+
+# === Git ===
+# Evitar commit de credenciales o configuraciones locales
+.env
+.env.*
