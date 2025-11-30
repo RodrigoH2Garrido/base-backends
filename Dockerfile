@@ -3,7 +3,6 @@ FROM golang:1.25
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-RUN mkdir -p /tmp
 
 # Instalamos Air (hot reload)
 RUN go install github.com/air-verse/air@latest
