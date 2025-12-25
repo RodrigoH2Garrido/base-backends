@@ -38,8 +38,7 @@ func test3Handler(c *gin.Context){
 		c.JSON(200, gin.H{"message": objA.Foo})
 	} else if errB := c.ShouldBindWith(&objB, binding.JSON); errB == nil {  // ✅ Correcto
 		c.JSON(200, gin.H{"message": objB.Bar})
-	} else {  // ✅ Correcto
+	} else {
 		c.JSON(200, gin.H{"message": "test3"})
 	}
-
 }

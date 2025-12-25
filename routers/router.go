@@ -7,4 +7,5 @@ import (
 func GeneralRouter(r *gin.Engine){
 	api := r.Group("/api")
 	TestRouter(api)
+	UserRouter(api)
 }
